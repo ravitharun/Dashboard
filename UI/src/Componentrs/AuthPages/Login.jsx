@@ -1,75 +1,87 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
 function Login() {
-    const [UserLogin, setUserlogin] = useState({Email:"",Passowrd:""})
-    const Login = async () => {
-        if (!UserLogin.Email || !UserLogin.Passowrd) {
-            alert("Fill the required feilds")
+  const [userEmail, setUserEmail] = useState("");
+  const [userPassword, setUserPassword] = useState("");
 
-
-        }
-        else {
-            const UserLoginData = {
-                Email: UserLogin.Email,
-                passowrd: UserLogin.passowrd
-            }
-            console.log("UserLoginData : ", UserLoginData)
-        }
+  const Login = async () => {
+    if (!userEmail || !userPassword) {
+      alert("Fill the required fields");
+      return;
     }
-    return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
 
-            <div className="w-full max-w-md bg-white shadow-lg rounded-2xl p-8">
+    const userData = {
+      email: userEmail,
+      password: userPassword,
+    };
 
-                {/* Title */}
-                <h2 className="text-3xl font-bold text-center text-blue-600 mb-6">
-                    Login
-                </h2>
+    try {
+      const response = await axios.post("http://localhost:5000/api/login", userData);
 
-                {/* Email */}
-                <div className="mb-4">
-                    <label className="block text-gray-700 mb-1">Email</label>
-                    <input
-                        type="email"
-                        required
-                        onChange={(e) => setUserlogin.Email(e.target.value)}
-                        className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Enter your email"
-                    />
-                </div>
+      console.log("Login Success :", response.data);
+      alert("Login Successful!");
 
-                {/* Password */}
-                <div className="mb-4">
-                    <label className="block text-gray-700 mb-1">Password</label>
-                    <input
-                        type="password"
-                        required
-                        onChange={(e) => setUserlogin.Passowrd(e.target.value)}
-                        className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Enter your password"
-                    />
-                </div>
+    } catch (error) {
+      console.error("Login Error:", error);
+      alert("Invalid Credentials or Server Issue.");
+    }
+  };
 
-                {/* Login Button */}
-                <button className="w-full bg-blue-600 text-white py-2 rounded-lg text-lg font-medium hover:bg-blue-700 transition" onClick={Login}>
-                    Login
-                </button>
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+      <div className="w-full max-w-md bg-white shadow-lg rounded-2xl p-8">
 
-                {/* Signup Link */}
-                <p className="text-center text-gray-600 mt-4">
-                    Don’t have an account
-                    <Link to="/Signup">
-                        <span className="text-blue-600 font-medium cursor-pointer hover:underline">
-                            Sign up
-                        </span>
-                    </Link>
-                </p>
+        <h2 className="text-3xl font-bold text-center text-blue-600 mb-6">
+          Login
+        </h2>
 
-            </div>
+        {/* Email */}
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-1">Email</label>
+          <input
+            type="email"
+            required
+            onChange={(e) => setUserEmail(e.target.value)}
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter your email"
+          />
         </div>
 
-    )
+        {/* Password */}
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-1">Password</label>
+          <input
+            type="password"
+            required
+            onChange={(e) => setUserPassword(e.target.value)}
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter your password"
+          />
+        </div>
+
+        {/* Login Button */}
+        <button
+          className="w-full bg-blue-600 text-white py-2 rounded-lg text-lg font-medium hover:bg-blue-700 transition"
+          onClick={Login}
+        >
+          Login
+        </button>
+
+        {/* Signup Link */}
+        <p className="text-center text-gray-600 mt-4">
+          Don’t have an account?
+          <Link to="/Signup">
+            <span className="text-blue-600 font-medium cursor-pointer hover:underline ml-1">
+              Sign up
+            </span>
+          </Link>
+        </p>
+
+      </div>
+    </div>
+  );
 }
 
-export default Login
+export default Login;
