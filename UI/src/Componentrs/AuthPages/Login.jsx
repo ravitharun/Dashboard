@@ -12,13 +12,18 @@ function Login() {
       return;
     }
 
-    const userData = {
-      email: userEmail,
-      password: userPassword,
-    };
+    // const userData = {
+    //   email: userEmail,
+    //   password: userPassword,
+    // };
+    console.log('userData', {
+      email: userEmail, password: userPassword
+    })
 
     try {
-      const response = await axios.post("http://localhost:5000/api/login", userData);
+      const response = await axios.post("http://localhost:5000/api/login", {
+        email: userEmail, password: userPassword
+      });
 
       console.log("Login Success :", response.data);
       alert("Login Successful!");
